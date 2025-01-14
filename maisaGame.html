@@ -86,11 +86,11 @@
 		walls.push(new Wall(x = 18, z = -12, width = 2, length = 4, "yellow"))
 		
 		
-		enemies.push(new Enemy(x=0, z=-3.5, v=0.01, direction="x", range=1.5, rotation=0, "red"))
-		enemies.push(new Enemy(x=3, z=-10, v=0.01, direction="x", range=1.5, rotation=0))
-		enemies.push(new Enemy(x=16, z=-9, v=0.01, direction="z", range=1.5, rotation=0))
-		enemies.push(new Enemy(x=28, z=-13, v=0.01, direction="z", range=1.5, rotation=0))
-		enemies.push(new Enemy(x=25, z=5, v=0.01, direction="x", range=1.5, rotation=0))
+		enemies.push(new Enemy(x=0, z=-3.5, v=0.10, direction="x", range=3, rotation=0, "red"))
+		enemies.push(new Enemy(x=3, z=-10, v=0.10, direction="x", range=3, rotation=0))
+		enemies.push(new Enemy(x=16, z=-9, v=0.10, direction="z", range=3, rotation=0))
+		enemies.push(new Enemy(x=28, z=-13, v=0.10, direction="z", range=3, rotation=0))
+		enemies.push(new Enemy(x=25, z=5, v=0.10, direction="x", range=3, rotation=0))
 		
 		coins.push(new Coin(x=0, z=-4.5))
 		coins.push(new Coin(x=4, z=-12))
@@ -144,28 +144,31 @@
 	//game loop 
 	function loop() {
 
-		for (let wall of walls) {
-			//mobile device: MOVE FORWARD
-			if (touchingNow == true) {
-				let angle = camera.getAttribute("rotation") 
-				let changeX = 0.25 * Math.sin(angle.y * Math.PI / 180)
-				let changeZ = 0.25 * Math.cos(angle.y * Math.PI / 180) 
-				cameraPos.x -= changeX/4; 
-				cameraPos.z -= changeZ/4; 
-			}
-			
+		for (let wall of walls) {	
 			wall.blocksYou()
-			if (coins.every(coin => coin.collected==true)) {
-			    cameraFinalX = cameraPos.x
-			    cameraFinalZ = cameraPos.z
-			    game_over()
-			    return
-			}
 		}
-		
+
+
+		if (coins.every(coin => coin.collected==true)) {
+		    cameraFinalX = cameraPos.x
+		    cameraFinalZ = cameraPos.z
+		    game_over()
+		    return
+		}
+
+
+		//mobile device: MOVE FORWARD
+		if (touchingNow == true) {
+			let angle = camera.getAttribute("rotation") 
+			let changeX = 0.25 * Math.sin(angle.y * Math.PI / 180)
+			let changeZ = 0.25 * Math.cos(angle.y * Math.PI / 180) 
+			cameraPos.x -= changeX/4; 
+			cameraPos.z -= changeZ/4; 
+		}
+	
 		for (let enemy of enemies) {
-		enemy.move()	
-		enemy.resetsYou()
+			enemy.move()	
+			enemy.resetsYou()
 		}
 		
 		for (let coin of coins) {
@@ -433,4 +436,5 @@
 </body>
 
 </html>
+
 
